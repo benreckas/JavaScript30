@@ -62,12 +62,70 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0, 2.1, 0.69, 1);
     }
 
+    .second-hand {
+      background: red;
+      height: 4px;
+    }
+
+    .hour-hand {
+      height: 10px;
+    }
   </style>
 
   <script>
 
+  const secondHand = document.querySelector('.second-hand');
+  const minsHand = document.querySelector('.min-hand');
+  const hourHand = document.querySelector('.hour-hand');
+
+  const hand = document.querySelector('.hand');
+
+  const setDate = function () {
+    const now = new Date();
+
+    //Seconds
+    const seconds = now.getSeconds();
+    const secondsDegrees = ((seconds / 60) * 360) + 90;
+    //if statement to remove 'glitch' when seconds hand resets to beginning.
+    if (secondsDegrees === 90) {
+      secondHand.style.transition = `none`;
+    } else {
+      secondHand.style.transition = ``;
+    }
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+    //Minutes
+    const mins = now.getMinutes();
+    const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+    //if statement to remove 'glitch' when minute hand resets to beginning.
+    if (minsDegrees === 90) {
+      minsHand.style.transition = `none`;
+    } else {
+      minsHand.style.transition = ``;
+    }
+    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+    //Hours
+    const hour = now.getHours();
+    const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+    //if statement to remove 'glitch' when hour hand resets to beginning.
+    if (hourDegrees === 90) {
+      hourHand.style.transition = `none`;
+    } else {
+      hourHand.style.transition = ``;
+    }
+    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+  };
+
+  setInterval(setDate, 1000); //Run the setDate function every 1000ms (=1second)
+
+  setDate(); //Call the function
 
   </script>
 </body>
